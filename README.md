@@ -36,8 +36,10 @@ This repository contains the code for an **Appointment Booking System** built us
 - [Configuration](#configuration)
 - [API Endpoints](#api-endpoints)
 - [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
+- [Deployment](#deployment)
+- [DialogFlow CX ](#DialogFlowCX)
+- [DialogFlow CX Test Cases ](#DialogFlowCXTestCases)
+- [Stay in Touch](#license)
 
 ---
 
@@ -153,33 +155,9 @@ curl --location 'http://localhost:2000/create-appointment' \
 
 This project includes several unit and integration tests to ensure the core functionality works as expected.
 
----
- PASS  src/app.service.spec.ts
- PASS  src/helpers/webhook.helper.spec.ts
- PASS  src/app.controller.spec.ts
-------------------------|---------|----------|---------|---------|-------------------
-File                    | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
-------------------------|---------|----------|---------|---------|-------------------
-All files               |   62.12 |    30.55 |    62.5 |   61.01 |                   
- src                    |      50 |    33.33 |   85.71 |   47.22 |                   
-  app.controller.ts     |     100 |      100 |     100 |     100 |                   
-  app.module.ts         |       0 |      100 |     100 |       0 | 1-29              
-  app.service.ts        |     100 |       50 |     100 |     100 | 19-20             
- src/dto                |     100 |      100 |     100 |     100 |                   
-  webhook.dto.ts        |     100 |      100 |     100 |     100 |                   
- src/helpers            |   89.74 |    56.25 |   66.66 |   89.18 |                   
-  webhook.helper.ts     |   89.74 |    56.25 |   66.66 |   89.18 | 76-84             
- src/schemas            |     100 |      100 |     100 |     100 |                   
-  appointment.schema.ts |     100 |      100 |     100 |     100 |                   
-  patient.schema.ts     |     100 |      100 |     100 |     100 |                   
- -----------------------|---------|----------|---------|---------|-------------------
+To test run command
 
-Test Suites: 3 passed, 3 total
-Tests:       11 passed, 11 total
-Snapshots:   0 total
-Time:        6.992 s
-Ran all test suites.
-✨  Done in 8.49s.
+` yarn test`
 
 ## Deployment
 
@@ -189,14 +167,13 @@ Used above provider to host my backend server, As i dont have access to **Comput
 
 Server is hosted on https://appointment-booking-q7vl.onrender.com
 
+## DialogFlow CX
 
-## DialogFlow CX 
 https://drive.google.com/file/d/1XOJWR3-h79BLhkUKX7d_2lqi2CStsbD8/view?usp=sharing
 
-
 ## DialogFlow CX Test Cases
-https://dialogflow.cloud.google.com/cx/projects/steer-dialogflow-demo/locations/global/agents/864bd247-2454-4423-bffc-4c0897209fea/testCases
 
+https://dialogflow.cloud.google.com/cx/projects/steer-dialogflow-demo/locations/global/agents/864bd247-2454-4423-bffc-4c0897209fea/testCases
 
 ## Stay in Touch
 
