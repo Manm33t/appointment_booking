@@ -34,20 +34,20 @@ export class WebHookHelper {
   }
 
   private appointmentTimeToTimestamp(appointmentTime: {
-    year?: number; // Optional year
-    month?: number; // Optional month
-    day?: number; // Optional day
-    hours?: number; // Optional hours
-    minutes?: number; // Optional minutes
-    seconds?: number; // Optional seconds
-    nanos?: number; // Optional nanos
+    year?: number;
+    month?: number;
+    day?: number;
+    hours?: number;
+    minutes?: number;
+    seconds?: number;
+    nanos?: number;
   }): Date {
-    const now = new Date(); // Get the current date and time
+    const now = new Date();
 
     const year = appointmentTime?.year ?? now.getFullYear();
     const month = appointmentTime?.month
       ? appointmentTime?.month - 1
-      : now.getMonth(); // Adjust for 0-indexed months
+      : now.getMonth();
     const day = appointmentTime?.day ?? now.getDate();
     const hours = appointmentTime?.hours ?? now.getHours();
     const minutes = appointmentTime?.minutes ?? now.getMinutes();
@@ -56,7 +56,7 @@ export class WebHookHelper {
 
     const date = new Date(year, month, day, hours, minutes, seconds, nanos);
 
-    return date; // Get timestamp in milliseconds
+    return date;
   }
 
   /**
@@ -98,7 +98,7 @@ export class WebHookHelper {
           `${body?.session?.dob?.month}-${body?.session?.dob?.day}-${body?.session?.dob?.year}`,
         ),
         insuranceCompany: body?.session?.insurance,
-        insuranceId: body?.session?.insuranceId,
+        insuranceId: body?.session?.insuranceid,
       });
     }
     const appointment = await this.createAnAppointment({

@@ -1,13 +1,4 @@
-import { IsInt, IsNotEmptyObject, IsString } from 'class-validator';
-
-class DOB {
-  @IsInt()
-  year: number;
-  @IsInt()
-  month: number;
-  @IsInt()
-  day: number;
-}
+import { IsNotEmptyObject, IsString } from 'class-validator';
 
 export class CheckPatientDto {
   @IsString()

@@ -18,14 +18,14 @@ describe('WebHookHelper', () => {
         {
           provide: getModelToken(Patient.name),
           useValue: {
-            findOne: jest.fn(), // Mock findOne method
-            save: jest.fn(), // Mock save method
+            findOne: jest.fn(),
+            save: jest.fn(),
           },
         },
         {
           provide: getModelToken(Appointment.name),
           useValue: {
-            save: jest.fn(), // Mock save method for Appointment
+            save: jest.fn(),
           },
         },
       ],
@@ -39,7 +39,7 @@ describe('WebHookHelper', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks(); // Clear all mocks after each test
+    jest.clearAllMocks();
   });
 
   describe('formatDate', () => {
@@ -111,16 +111,14 @@ describe('WebHookHelper', () => {
         save: jest.fn().mockResolvedValue({ _id: 'newAppointmentId' }),
       };
 
-      // Mock the behavior of checkPatientExistsOrNot to simulate patient not found
-      webhookHelper.checkPatientExistsOrNot = jest.fn().mockResolvedValue(null); // Simulating patient does not exist
+      webhookHelper.checkPatientExistsOrNot = jest.fn().mockResolvedValue(null);
       (webhookHelper as any).createPatient = jest
         .fn()
-        .mockResolvedValue(mockPatient); // Simulating patient creation
+        .mockResolvedValue(mockPatient);
 
-      // Mock the saving of the appointment
       (webhookHelper as any).createAnAppointment = jest
         .fn()
-        .mockResolvedValue(mockAppointment); // Simulate appointment creation
+        .mockResolvedValue(mockAppointment);
 
       const body: CreatePatientDto = {
         session: {
@@ -129,7 +127,7 @@ describe('WebHookHelper', () => {
           lastname: { original: 'Doe' },
           dob: { month: 5, day: 12, year: 1990 },
           insurance: 'XYZ Health',
-          insuranceId: 'INS123',
+          insuranceid: 'INS123',
           appointmenttype: 'Checkup',
           appointmenttime: {
             year: 2024,
@@ -143,11 +141,9 @@ describe('WebHookHelper', () => {
         },
       };
 
-      // Call the method
       const result = await webhookHelper.createAppointment(body);
 
-      // Expectations
-      expect(result).toBe('newAppointmentId'.slice(-4)); // The ID should be the last 4 characters of appointment ID
+      expect(result).toBe('newAppointmentId'.slice(-4));
       expect(webhookHelper.checkPatientExistsOrNot).toHaveBeenCalledWith({
         mobileNumber: '1234567890',
       });
@@ -155,14 +151,14 @@ describe('WebHookHelper', () => {
         firstName: 'john',
         lastName: 'doe',
         mobileNumber: '1234567890',
-        birthDate: '05-12-1990', // formatted date
+        birthDate: '05-12-1990',
         insuranceCompany: 'XYZ Health',
         insuranceId: 'INS123',
       });
       expect((webhookHelper as any).createAnAppointment).toHaveBeenCalledWith({
-        patientID: 'newPatientId', // patient ID from the created patient
+        patientID: 'newPatientId',
         appointmentType: 'Checkup',
-        appointmentTime: new Date('2024-12-20T04:00:00.000Z'), // It should be a timestamp
+        appointmentTime: new Date('2024-12-20T04:00:00.000Z'),
       });
     });
 
@@ -176,15 +172,13 @@ describe('WebHookHelper', () => {
         save: jest.fn().mockResolvedValue({ _id: 'newAppointmentId' }),
       };
 
-      // Mock the behavior of checkPatientExistsOrNot to simulate patient found
       webhookHelper.checkPatientExistsOrNot = jest
         .fn()
-        .mockResolvedValue(mockPatient); // Simulating patient exists
+        .mockResolvedValue(mockPatient);
 
-      // Mock the saving of the appointment
       (webhookHelper as any).createAnAppointment = jest
         .fn()
-        .mockResolvedValue(mockAppointment); // Simulate appointment creation
+        .mockResolvedValue(mockAppointment);
 
       const body: CreatePatientDto = {
         session: {
@@ -207,18 +201,16 @@ describe('WebHookHelper', () => {
         },
       };
 
-      // Call the method
       const result = await webhookHelper.createAppointment(body);
 
-      // Expectations
-      expect(result).toBe('newAppointmentId'.slice(-4)); // The ID should be the last 4 characters of appointment ID
+      expect(result).toBe('newAppointmentId'.slice(-4));
       expect(webhookHelper.checkPatientExistsOrNot).toHaveBeenCalledWith({
         mobileNumber: '1234567890',
       });
       expect((webhookHelper as any).createAnAppointment).toHaveBeenCalledWith({
-        patientID: 'existingPatientId', // patient ID from the found patient
+        patientID: 'existingPatientId',
         appointmentType: 'Checkup',
-        appointmentTime: new Date('2024-12-20T04:00:01.001Z'), // It should be a timestamp
+        appointmentTime: new Date('2024-12-20T04:00:01.001Z'),
       });
     });
   });

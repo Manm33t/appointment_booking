@@ -8,7 +8,6 @@ import {
 
 @Injectable()
 export class AppService {
-  //Injecting helpers here which will help service class
   constructor(@Inject() private readonly webhookHelper: WebHookHelper) {}
 
   async checkPatientExistsOrNot(body: CheckPatientDto): Promise<SessionInfo> {
