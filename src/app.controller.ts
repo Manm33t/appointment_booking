@@ -1,24 +1,26 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import {
+  CheckPatientDto,
+  CreatePatientDto,
+  SessionInfo,
+} from './dto/webhook.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  async getHello(): Promise<any> {
-    return this.appService.getHello();
+  @Post('/check-patient')
+  async checkPatientExistsOrNot(
+    @Body() body: CheckPatientDto,
+  ): Promise<SessionInfo> {
+    return this.appService.checkPatientExistsOrNot(body);
   }
 
-  @Put()
-  async createPatient(@Body() body: any): Promise<void> {
-    await this.appService.createPatient(body)
+  @Post('/create-appointment')
+  async createAppointment(
+    @Body() body: CreatePatientDto,
+  ): Promise<SessionInfo> {
+    return this.appService.createAppointment(body);
   }
-
-  @Post()
-  async webhook(@Body() body: any): Promise<void> {
-    await this.appService.processRequest(body)
-  }
-
-  
 }

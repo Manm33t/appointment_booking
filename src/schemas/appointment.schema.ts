@@ -10,10 +10,7 @@ export class Appointment extends Document {
   appointmentType: string;
 
   @Prop({ required: true })
-  appointmentStartTime: Date;
-
-  @Prop({ required: true })
-  appointmentEndTime: Date;
+  appointmentTime: Date;
 }
 
 export const AppointmentSchema = SchemaFactory.createForClass(Appointment);

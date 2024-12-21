@@ -1,66 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Patient } from './schemas/patient.schema';
-import { Model } from 'mongoose';
-import { Appointment } from './schemas/appointment.schema';
+import { Inject, Injectable } from '@nestjs/common';
+import { WebHookHelper } from './helpers/webhook.helper';
+import {
+  CheckPatientDto,
+  CreatePatientDto,
+  SessionInfo,
+} from './dto/webhook.dto';
 
 @Injectable()
 export class AppService {
-  constructor(
-    @InjectModel(Patient.name) private patientModel: Model<Patient>,
-    @InjectModel(Appointment.name) private appointmentModel: Model<Appointment>,
-  ) {}
-  async getHello(): Promise<any> {
-    return this.patientModel.find();
-  }
+  //Injecting helpers here which will help service class
+  constructor(@Inject() private readonly webhookHelper: WebHookHelper) {}
 
-  async createPatient(data: any): Promise<void> {
-    const patient = new this.patientModel({ ...data });
-    await patient.save();
-  }
+  async checkPatientExistsOrNot(body: CheckPatientDto): Promise<SessionInfo> {
+    const user = await this.webhookHelper.checkPatientExistsOrNot(body);
 
-  async processRequest(body: any): Promise<any> {
-    console.log(body, 'body');
-    return;
-    const parameters = body.sessionInfo.parameters;
-    const { firstName, lastName, birthdate, appointmentType, insuranceInfo } =
-      parameters;
-
-    // Check if the patient exists
-    let patient = await this.patientModel.findOne({
-      firstName,
-      lastName,
-      birthdate,
-    });
-    if (!patient) {
-      // Create a new patient
-      patient = new this.patientModel({
-        firstName,
-        lastName,
-        birthdate,
-        insuranceInfo,
-      });
-      await patient.save();
-    }
-
-    // Create a new appointment
-    const appointment = new this.appointmentModel({
-      patientId: patient._id,
-      appointmentType,
-      appointmentTimeSlot: parameters.appointmentTimeSlot,
-    });
-    await appointment.save();
-
-    // Return response to Dialogflow
     return {
-      fulfillmentResponse: {
-        messages: [
-          {
-            text: {
-              text: [`Your appointment has been booked successfully.`],
-            },
-          },
-        ],
+      sessionInfo: {
+        parameters: {
+          patientexists: !!user ? 'true' : 'false',
+          firstName: !!user
+            ? { name: user?.firstName, original: user?.firstName }
+            : null,
+        },
+      },
+    };
+  }
+
+  async createAppointment(body: CreatePatientDto): Promise<SessionInfo> {
+    const appointment = await this.webhookHelper.createAppointment(body);
+    return {
+      sessionInfo: {
+        parameters: {
+          appointmentId: appointment,
+        },
       },
     };
   }

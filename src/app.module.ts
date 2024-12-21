@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { Patient, PatientSchema } from './schemas/patient.schema';
 import { Appointment, AppointmentSchema } from './schemas/appointment.schema';
 import { ConfigModule } from '@nestjs/config';
+import { WebHookHelper } from './helpers/webhook.helper';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { ConfigModule } from '@nestjs/config';
     ]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, WebHookHelper],
 })
 export class AppModule {}

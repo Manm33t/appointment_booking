@@ -9,17 +9,16 @@ export class Patient extends Document {
   @Prop({ required: true })
   lastName: string;
 
-  @Prop({ required: true })
-  phoneNumber: string;
+  @Prop({ required: true, unique: true })
+  mobileNumber: string;
 
   @Prop({ required: true })
-  emailID: string;
-
-  @Prop({ required: true })
-  birthDate: Date;
+  birthDate: string;
 
   @Prop()
-  insuranceInfo?: string;
+  insuranceCompany?: string;
+  @Prop()
+  insuranceId?: string;
 }
 
 export const PatientSchema = SchemaFactory.createForClass(Patient);

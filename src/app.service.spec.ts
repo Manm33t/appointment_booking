@@ -1,16 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
-describe('AppController', () => {
-  let appController: AppController;
+import { AppService } from './app.service';
+import { WebHookHelper } from './helpers/webhook.helper';
+
+describe('AppService', () => {
+  let appService: AppService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
       providers: [
+        AppService,
         {
-          provide: AppService,
+          provide: WebHookHelper,
           useValue: {
             checkPatientExistsOrNot: () => {},
             createAppointment: () => {},
@@ -19,26 +20,18 @@ describe('AppController', () => {
       ],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    appService = app.get<AppService>(AppService);
   });
 
   describe('root', () => {
     it('should return "checkPatientExistsOrNot"', async () => {
       jest
-        .spyOn((appController as any).appService, 'checkPatientExistsOrNot')
+        .spyOn((appService as any).webhookHelper, 'checkPatientExistsOrNot')
         .mockResolvedValue({
-          sessionInfo: {
-            parameters: {
-              patientexists: 'true',
-              firstName: {
-                name: 'singh',
-                original: 'singh',
-              },
-            },
-          },
+          firstName: 'singh',
         });
       expect(
-        await appController.checkPatientExistsOrNot({
+        await appService.checkPatientExistsOrNot({
           mobileNumber: '123456789',
         }),
       ).toEqual({
@@ -56,16 +49,10 @@ describe('AppController', () => {
 
     it('should return "createAppointment"', async () => {
       jest
-        .spyOn((appController as any).appService, 'createAppointment')
-        .mockResolvedValue({
-          sessionInfo: {
-            parameters: {
-              appointmentId: '1234',
-            },
-          },
-        });
+        .spyOn((appService as any).webhookHelper, 'createAppointment')
+        .mockResolvedValue('1234');
       expect(
-        await appController.createAppointment({
+        await appService.createAppointment({
           session: {
             mobileNumber: '1223343',
           },
